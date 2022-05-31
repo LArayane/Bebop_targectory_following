@@ -1,0 +1,31 @@
+<launch>
+
+<node
+ pkg="bebop_pkg"
+ type="newFrame"
+ name="my_tf_broadcaster"
+ />
+
+ <node
+ pkg="bebop_pkg"
+ type="my_tf_listener"
+ name="my_tf_listener"
+ />
+
+ <node
+ pkg="bebop_pkg"
+ type="NFrame"
+ name="my_new_frame"/>
+
+
+   
+   <node pkg="image_view" type="image_saver" name="image_saver" output="screen">
+    <param name="filename_format" value="%04i.png"/>
+    <param name="save_all_image" value="true"/>
+    <remap from="image" to="/bebop/image_raw"/>
+    </node>
+
+   <node pkg="rosbag" type="record" name="record" respawn="true" output="screen" 
+args="-O $(find bebop_pkg)/bag_files/bag_vicon /bebop/camera_vicon_cmd_vel /bebop/camera_vicon_cmd_vel_sync /bebop/camera_info /bebop/newFrame_pos /vrpn_client_node/bebopRayane/pose /vrpn_client_node/bebopRayane/twist /tf" />
+   
+</launch>

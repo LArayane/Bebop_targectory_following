@@ -1,0 +1,42 @@
+<launch>
+
+  <node pkg="image_view" type="image_saver" name="image_saver" output="screen" ns= "sim2" >
+    <param name="filename_format" value="/home/rayane/catkin_ws/src/bebop_pkg/bag_files/rgb_Images/%04irgb.png"/>
+    <param name="save_all_image" value="true"/>
+    <remap from="image" to="/bebop/image_raw"/>
+    </node>
+
+
+   <node
+   pkg="bebop_pkg"
+   type="newFrame"
+   name="my_tf_broadcaster"
+   />
+
+
+
+   <node
+   pkg="bebop_pkg"
+   type="camera_newFrame_bebop_tf_listener_2"
+   name="camera_newFrame_bebop_tf_listener_2"
+   />
+
+
+   <node
+   pkg="bebop_pkg"
+   type="NFrame"
+   name="my_new_frame"/>
+
+
+    <node
+   pkg="bebop_pkg"
+   type="trajectoryGoal"
+   name="trajectoryGoal"
+   />
+
+
+   <node pkg="rosbag" type="record" name="record" respawn="true" output="screen" 
+args="-O $(find bebop_pkg)/bag_files/bag_vicon /bebop/odom /bebop/camera_vicon_cmd_vel /bebop/camera_info /bebop/newFrame_pos /vrpn_client_node/bebopRayane/pose /vrpn_client_node/bebopRayane/twist /tf /vrpn_client_node/pointRayane/pose /vrpn_client_node/pointRayane/twist /bebop/camera_optical_cmd_vel " />
+
+   
+</launch>
